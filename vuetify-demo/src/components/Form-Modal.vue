@@ -4,36 +4,20 @@
       <v-col cols="auto">
         <v-dialog
           transition="dialog-bottom-transition"
-          id="modal-prevent-closing"
+          v-model="openDialog"
           max-width="600"
-          ref="modal"
-          modal-class="hidden"
-          @shown="onShowModal"
-          @hide="onHideHandler"
         >
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn color="primary" v-bind="attrs" v-on="on"
-              >From the bottom</v-btn
-            >
-          </template>
-          <template v-slot:default="dialog">
-            <v-card>
-              <!-- <v-toolbar color="primary" dark
-                >Opening from the bottom</v-toolbar
-              > -->
-              <!-- <v-card-text>
-                <div class="text-h2 pa-12">Hello world!</div>
-              </v-card-text> -->
-              <CarForm
-                modalId="modal-prevent-closing"
-                :formData="$props"
-                v-on="$listeners"
-              />
-              <v-card-actions class="justify-end">
-                <v-btn text @click="dialog.value = false">Close</v-btn>
-              </v-card-actions>
-            </v-card>
-          </template>
+          <v-card>
+            <v-toolbar color="primary" dark>{{
+              dialogType === "add" ? "add car data" : "edit car data"
+            }}</v-toolbar>
+            <v-card-text>
+              <CarForm v-on="$listeners" />
+            </v-card-text>
+            <v-card-actions class="justify-end">
+              <v-btn text @click="closeDialog">Close</v-btn>
+            </v-card-actions>
+          </v-card>
         </v-dialog>
       </v-col>
     </v-row>
@@ -69,21 +53,37 @@ export default {
       name: "FormModal",
     };
   },
+  computed: {
+    openDialog() {
+      return this.$store.getters["ui/getisDialogOpen"];
+    },
+    dialogType() {
+      return this.$store.getters["ui/getDialogType"];
+    },
+  },
+
   methods: {
-    onHideHandler() {
-      this.$parent.selectedCardData = {
+    closeDialog() {
+      this.$store.commit("ui/closeDialog");
+      let selectedCardData = {
         carId: "",
         carTitle: "",
         cardetails: "",
         carPrice: "",
         carImage: "",
       };
+      this.$store.commit("cars/setSelectedCarData", selectedCardData);
     },
-    onShowModal() {
-      let m = document.getElementById("modal-prevent-closing");
-      m.classList.remove("hidden");
-      m.classList.add("slideInUp");
-      m.classList.add("animated");
+
+    onHide() {
+      let selectedCardData = {
+        carId: "",
+        carTitle: "",
+        cardetails: "",
+        carPrice: "",
+        carImage: "",
+      };
+      this.$store.commit("cars/setSelectedCarData", selectedCardData);
     },
   },
 };

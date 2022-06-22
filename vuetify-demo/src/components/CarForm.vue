@@ -114,7 +114,6 @@
               v-model="carItem.carDetails"
               :error-messages="errors"
               label="CarDetails"
-              id="detail-input"
               required
             ></v-text-field>
           </validation-provider>
@@ -136,7 +135,9 @@
               required
             ></v-text-field>
           </validation-provider>
-          <v-btn class="mr-4" type="submit" :disabled="invalid"> submit </v-btn>
+          <v-btn class="mr-4" type="submit" :disabled="invalid">
+            {{ formType === "add" ? "add car" : "edit car" }}
+          </v-btn>
         </center>
       </form>
     </validation-observer>
@@ -145,27 +146,56 @@
 <script>
 export default {
   name: "CarForm",
-  props: ["modalId", "formData"],
+  props: ["modalId"],
   data() {
     return {
       carItem: {
-        carId: this.formData.formData.carId || "",
-        carName: this.formData.formData.carName || "",
-        carDetails: this.formData.formData.carDetails || "",
-        carImgURL: this.formData.formData.carImgURL || "",
-        carPrice: this.formData.formData.carPrice || "",
+        carId: this.$store.getters["cars/getSelectedCarData"].carId || "",
+        carName: this.$store.getters["cars/getSelectedCarData"].carName || "",
+        carDetails:
+          this.$store.getters["cars/getSelectedCarData"].carDetails || "",
+        carImgURL:
+          this.$store.getters["cars/getSelectedCarData"].carImgURL || "",
+        carPrice: this.$store.getters["cars/getSelectedCarData"].carPrice || "",
       },
-      formModalId: this.modalId,
+
       disabledButton: false,
     };
   },
+  computed: {
+    formType() {
+      return this.$store.getters["ui/getDialogType"];
+    },
+  },
   methods: {
-    handleSubmit() {
-      this.$emit("submittedFormData", this.carItem);
-      this.$bvModal.hide(this.formModalId);
-      this.$nextTick(() => {
-        this.$bvModal.hide("modal-prevent-closing");
-      });
+    async handleSubmit() {
+      // this.$emit("submittedFormData", this.carItem);
+      if (this.carItem.carId !== "") {
+        let selectedCardData = {
+          carId: this.carId,
+          carName: this.carName,
+          carDetails: this.carDetails,
+          carImgURL: this.carImgURL,
+          carPrice: this.carPrice,
+        };
+        await this.$store.dispatch("cars/updateCarData", this.carItem);
+        await this.$store.dispatch("cars/getCarsData");
+        selectedCardData = {
+          carId: this.carId,
+          carName: this.carName,
+          carDetails: this.carDetails,
+          carImgURL: this.carImgURL,
+          carPrice: this.carPrice,
+        };
+        this.$store.commit("cars/setSelectedCarData", selectedCardData);
+      } else {
+        console.log("else");
+      }
+
+      // this.$bvModal.hide(this.formModalId);
+      // this.$nextTick(() => {
+      //   this.$bvModal.hide("modal-prevent-closing");
+      // });
     },
     onButtonAnimate() {
       this.disabledButton = true;

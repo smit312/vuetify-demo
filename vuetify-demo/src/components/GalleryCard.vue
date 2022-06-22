@@ -121,7 +121,7 @@ export default {
 
       <v-card-actions>
         <v-btn
-          color="deep-purple lighten-2" 
+          color="deep-purple lighten-2"
           text
           class="pa-3"
           @click="$emit('deleteCard')"

@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import auth from "./modules/auth";
 import cars from "./modules/cars";
 import addcar from "./modules/addcar";
+import ui from "./modules/ui";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -11,5 +12,6 @@ export default new Vuex.Store({
     auth,
     cars,
     addcar,
+    ui,
   },
 });

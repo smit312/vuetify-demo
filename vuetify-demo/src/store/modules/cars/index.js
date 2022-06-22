@@ -3,6 +3,13 @@ import axios from "axios";
 const state = {
   cars: [],
   carData: "",
+  selectedCardData: {
+    carId: "",
+    carTitle: "",
+    cardetails: "",
+    carPrice: "",
+    carImage: "",
+  },
 };
 
 const getters = {
@@ -11,6 +18,9 @@ const getters = {
   },
   updateCar: (state) => {
     return state.car;
+  },
+  getSelectedCarData(state) {
+    return state.selectedCardData;
   },
 };
 
@@ -23,6 +33,9 @@ const mutations = {
   },
   SET_CAR(state, car) {
     state.carData = car;
+  },
+  setSelectedCarData(state, data) {
+    state.selectedCardData = data;
   },
 };
 

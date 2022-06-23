@@ -1,26 +1,26 @@
 <template>
   <div>
-    <v-row justify="space-around">
-      <v-col cols="auto">
-        <v-dialog
-          transition="dialog-bottom-transition"
-          v-model="openDialog"
-          max-width="600"
-        >
-          <v-card>
-            <v-toolbar color="primary" dark>{{
-              dialogType === "add" ? "add car data" : "edit car data"
-            }}</v-toolbar>
-            <v-card-text>
-              <CarForm v-on="$listeners" />
-            </v-card-text>
-            <v-card-actions class="justify-end">
-              <v-btn text @click="closeDialog">Close</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-col>
-    </v-row>
+    <!-- <v-row justify="space-around">
+      <v-col cols="auto"> -->
+    <v-dialog
+      transition="dialog-bottom-transition"
+      v-model="openDialog"
+      max-width="500"
+    >
+      <v-card>
+        <v-toolbar color="primary" dark>{{
+          dialogType === "add" ? "add car data" : "edit car data"
+        }}</v-toolbar>
+        <v-card-text>
+          <CarForm v-on="$listeners" />
+        </v-card-text>
+        <v-card-actions class="justify-end">
+          <v-btn text @click="closeDialog">Close</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <!-- </v-col>
+    </v-row> -->
     <!-- <b-modal
       id="modal-prevent-closing"
       ref="modal"
@@ -65,17 +65,6 @@ export default {
   methods: {
     closeDialog() {
       this.$store.commit("ui/closeDialog");
-      let selectedCardData = {
-        carId: "",
-        carTitle: "",
-        cardetails: "",
-        carPrice: "",
-        carImage: "",
-      };
-      this.$store.commit("cars/setSelectedCarData", selectedCardData);
-    },
-
-    onHide() {
       let selectedCardData = {
         carId: "",
         carTitle: "",

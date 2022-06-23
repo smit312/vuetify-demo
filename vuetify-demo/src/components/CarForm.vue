@@ -166,10 +166,21 @@ export default {
     formType() {
       return this.$store.getters["ui/getDialogType"];
     },
+    selectedData() {
+      return this.$store.getters["cars/getSelectedCarData"];
+    },
+  },
+  watch: {
+    selectedData(newData) {
+      this.carItem.carId = newData.carId;
+      this.carItem.carName = newData.carName;
+      this.carItem.carDetails = newData.carDetails;
+      this.carItem.carImgURL = newData.carImgURL;
+      this.carItem.carPrice = newData.carPrice;
+    },
   },
   methods: {
     async handleSubmit() {
-      // this.$emit("submittedFormData", this.carItem);
       if (this.carItem.carId !== "") {
         let selectedCardData = {
           carId: this.carId,
@@ -178,7 +189,7 @@ export default {
           carImgURL: this.carImgURL,
           carPrice: this.carPrice,
         };
-        await this.$store.dispatch("cars/updateCarData", this.carItem);
+        await this.$store.dispatch("cars/updateCar", this.carItem);
         await this.$store.dispatch("cars/getCarsData");
         selectedCardData = {
           carId: this.carId,
@@ -189,9 +200,10 @@ export default {
         };
         this.$store.commit("cars/setSelectedCarData", selectedCardData);
       } else {
-        console.log("else");
+        await this.$store.dispatch("addcar/addCar", this.carItem);
+        await this.$store.dispatch("cars/getCarsData");
       }
-
+      this.$store.commit("ui/closeDialog");
       // this.$bvModal.hide(this.formModalId);
       // this.$nextTick(() => {
       //   this.$bvModal.hide("modal-prevent-closing");

@@ -2,7 +2,7 @@ import axios from "axios";
 
 const state = {
   cars: [],
-  carData: "",
+  carData: {},
   selectedCardData: {
     carId: "",
     carTitle: "",
@@ -97,6 +97,7 @@ const actions = {
         return "Oops, data not found";
       });
   },
+
   deleteCarData(_, id) {
     return axios
       .delete(`https://testapi.io/api/dartya/resource/cardata/${id}`)

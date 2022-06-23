@@ -14,8 +14,8 @@
         :content="this.errmsg"
       />
     </div>
-    <v-row>
-      <v-col class="d-flex justify-space-between mb-6">
+    <v-row class="pt-3 justify-content-md-center d-flex">
+      <v-col cols="3" class="d-flex align-items-stretch">
         <GalleryCard
           v-for="car in this.$store.state.cars.cars"
           :key="car.id"
@@ -28,14 +28,9 @@
           @editCard="editCard(car)"
           @deleteCard="deleteCard(car)"
         />
-        <transition name="bounce">
-          <FormModal
-            :formData="selectedCardData"
-            @submittedFormData="handleSubmittedData"
-          />
-        </transition>
       </v-col>
     </v-row>
+    <FormModal />
   </div>
 </template>
 
@@ -55,20 +50,17 @@ export default {
     return {
       cars: [],
       formModalId: this.modalId,
-      selectedCardData: {
-        carId: "",
-        carName: "",
-        carDetails: "",
-        carPrice: "",
-        carImgURL: "",
-      },
       submittedNames: [],
       isLoading: false,
       errmsg: "",
       successmsg: "",
     };
   },
-
+  computed: {
+    selectedCardData() {
+      return this.$store.getters["cars/getSelectedCarData"];
+    },
+  },
   methods: {
     CarInfo(id) {
       this.$router.push({
@@ -79,14 +71,15 @@ export default {
       });
     },
     editCard(car) {
-      this.selectedCardData = {
+      let selectedCardData = {
         carId: car.id,
         carName: car.name,
         carDetails: car.details,
         carPrice: car.price,
         carImgURL: car.image,
       };
-      this.$bvModal.show("modal-prevent-closing");
+      this.$store.commit("cars/setSelectedCarData", selectedCardData);
+      this.$store.commit("ui/openDialog", { type: "edit" });
     },
     async deleteCard(data) {
       let res = await this.$store.dispatch("cars/deleteCarData", data.id);

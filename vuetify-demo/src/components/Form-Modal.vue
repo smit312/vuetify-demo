@@ -1,7 +1,5 @@
 <template>
   <div>
-    <!-- <v-row justify="space-around">
-      <v-col cols="auto"> -->
     <v-dialog
       transition="dialog-bottom-transition"
       v-model="openDialog"
@@ -19,26 +17,6 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <!-- </v-col>
-    </v-row> -->
-    <!-- <b-modal
-      id="modal-prevent-closing"
-      ref="modal"
-      modal-class="hidden"
-      title="Enter car Detail"
-      hide-footer="true"
-      @shown="onShowModal"
-      @hide="onHideHandler"
-      no-fade
-    >  -->
-
-    <!-- <CarForm
-      modalId="modal-prevent-closing"
-      :formData="$props"
-      v-on="$listeners"
-    /> -->
-
-    <!-- </b-modal>  -->
   </div>
 </template>
 

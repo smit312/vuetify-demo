@@ -36,10 +36,6 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   let isAuth = false;
-  // const token = document.cookie.search("authUser");
-  // if (token !== -1) {
-  //   isAuth = true;
-  // }
   if (window.$cookies.get("authUser")) {
     isAuth = true;
   }
